@@ -46,7 +46,7 @@ def init_spi():
     spi.bits_per_word = 8
     spi.max_speed_hz = 1000000
     spi.mode = 0
-    print("spi initialized " + spi)
+    print("spi initialized " + str(spi))
     return spi
 
 
@@ -77,7 +77,7 @@ class spi_handler():
 
         spi_response = spi_handler.spi.xfer(spi_request)  # SPI read
         if debug:
-            print("spi read " + len(spi_request) + " bytes from " + addr)
+            print("spi read " + str(len(spi_request)) + " bytes from " + str(addr))
         return bytearray(spi_response[3:])
 
     @staticmethod
@@ -95,20 +95,20 @@ class spi_handler():
         if len(spi_request) < 4096:
             spi_handler.spi.xfer(spi_request)
             if debug:
-                print("spi write " +  len(spi_request) - 3 + " bytes")
+                print("spi write " +  str(len(spi_request) - 3) + " bytes")
         else:
             finished = False
             while not finished:
                 if len(spi_request) < 4096:
                     spi_handler.spi.xfer(spi_request)
                     if debug:
-                        print("spi write " +  len(spi_request) - 3 + " bytes")
+                        print("spi write " +  str(len(spi_request) - 3) + " bytes")
                     finished = True
                 else:
                     short_request = spi_request[:4003]
                     spi_handler.spi.xfer(short_request)
                     if debug:
-                        print("spi write " +  len(short_request) - 3 + " bytes")
+                        print("spi write " +  str(len(short_request)) - 3 + " bytes")
 
                     # skip forward 1000 cells
                     addr = addr + 1000  # each memory cell is 4 bytes long
